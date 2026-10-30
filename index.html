@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="th" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BALLROOM DANCE QUIZ | แบบทดสอบความรู้เกี่ยวกับกีฬาลีลาศ</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts: Kanit & Sarabun -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3978F6',
+                        royal: '#5278F5',
+                        aurora: '#8B75F5',
+                        lavender: '#C7B8FF',
+                        ice: '#B8DFFF',
+                        lightBg: '#F8FAFF',
+                        darkNavy: '#202842',
+                        secondaryText: '#64748B',
+                        borderCol: '#E5EAF5'
+                    },
+                    fontFamily: {
+                        kanit: ['Kanit', 'sans-serif'],
+                        sarabun: ['Sarabun', 'sans-serif']
+                    },
+                    backgroundImage: {
+                        'aurora-gradient': 'linear-gradient(135deg, #3978F6 0%, #697AF7 50%, #A68BFA 100%)',
+                        'card-gradient': 'linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,255,0.9) 100%)',
+                        'sub-gradient': 'linear-gradient(135deg, #DDEBFF 0%, #EDE7FF 100%)'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
+            background-color: #F8FAFF;
+            color: #202842;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(229, 234, 245, 0.8);
+            box-shadow: 0 10px 30px rgba(57, 120, 246, 0.08);
+        }
+        .aurora-glow {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139, 117, 245, 0.15) 0%, rgba(57, 120, 246, 0.05) 60%, transparent 100%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        @media print {
+            body { background: white !important; }
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            .glass-card { border: 1px solid #ccc; box-shadow: none; background: white; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative selection:bg-lavender selection:text-darkNavy">
+
+    <!-- Background Aurora Orbs -->
+    <div class="aurora-glow -top-40 -left-40 animate-pulse"></div>
+    <div class="aurora-glow top-1/2 -right-40 animate-pulse" style="animation-duration: 4s;"></div>
+
+    <!-- Header Navigation Bar -->
+    <header class="w-full py-4 px-6 md:px-12 border-b border-borderCol bg-white/70 backdrop-blur-md sticky top-0 z-40 flex justify-between items-center shadow-xs">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="app.returnHome()">
+            <div class="w-10 h-10 rounded-xl bg-aurora-gradient flex items-center justify-center text-white shadow-md">
+                <i data-lucide="award" class="w-6 h-6"></i>
+            </div>
+            <div>
+                <span class="text-lg md:text-xl font-bold tracking-wide bg-gradient-to-r from-primary to-aurora bg-clip-text text-transparent">BALLROOM DANCE QUIZ</span>
+                <p class="text-xs text-secondaryText hidden sm:block">แบบทดสอบความรู้เกี่ยวกับกีฬาลีลาศ</p>
+            </div>
+        </div>
+        <div id="header-user-info" class="hidden items-center space-x-3 bg-sub-gradient px-4 py-2 rounded-xl border border-borderCol text-sm font-medium">
+            <i data-lucide="user" class="w-4 h-4 text-primary"></i>
+            <span id="header-name-display" class="text-darkNavy font-semibold"></span>
+            <button onclick="app.confirmReset()" class="ml-2 text-xs text-red-500 hover:text-red-700 underline no-print">เริ่มใหม่</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-4 sm:p-6 md:p-8 flex flex-col justify-center items-center relative z-10">
+
+        <!-- VIEW 1: WELCOME PAGE -->
+        <section id="view-welcome" class="w-full max-w-2xl py-6 transition-all duration-300">
+            <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-xl border border-white/80 relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-sub-gradient rounded-bl-full opacity-50 -z-10"></div>
+                
+                <div class="text-center mb-8">
+                    <div class="inline-flex p-4 rounded-2xl bg-sub-gradient text-primary mb-4 shadow-inner">
+                        <i data-lucide="graduation-cap" class="w-10 h-10"></i>
+                    </div>
+                    <span class="inline-block px-3 py-1 bg-ice/60 text-primary text-xs font-semibold rounded-full mb-3 uppercase tracking-wider">Aurora Glass • Premium Education</span>
+                    <h1 class="text-2xl sm:text-4xl font-bold text-darkNavy mb-2">BALLROOM DANCE QUIZ</h1>
+                    <p class="text-lg text-primary font-medium">แบบทดสอบความรู้เกี่ยวกับกีฬาลีลาศ</p>
+                </div>
+
+                <div class="bg-lightBg rounded-2xl p-5 mb-6 border border-borderCol">
+                    <h3 class="font-semibold text-darkNavy mb-3 flex items-center">
+                        <i data-lucide="info" class="w-5 h-5 text-primary mr-2"></i> คำแนะนำก่อนเริ่มทำแบบทดสอบ
+                    </h3>
+                    <ul class="space-y-2 text-sm text-secondaryText list-disc list-inside font-sarabun leading-relaxed">
+                        <li>แบบทดสอบปรนัยจำนวน <span class="font-semibold text-darkNavy">40 ข้อ</span> (มีตัวเลือก A, B, C และ D)</li>
+                        <li>เลือกคำตอบที่ถูกต้องที่สุดเพียง 1 ตัวเลือกต่อข้อ</li>
+                        <li>ท่านสามารถย้อนกลับมาทบทวนหรือเปลี่ยนคำตอบได้ตลอดเวลาก่อนกดส่งข้อสอบ</li>
+                        <li>ระบบจะทำการตรวจคะแนนและแสดงผลประเมินพร้อมเฉลยทันทีหลังส่งคำตอบ</li>
+                    </ul>
+                </div>
+
+                <form id="form-welcome" onsubmit="app.startQuiz(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-secondaryText mb-1.5">ชื่อจริง (First Name)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondaryText">
+                                    <i data-lucide="user" class="w-4 h-4"></i>
+                                </span>
+                                <input type="text" id="input-firstname" required placeholder="กรอกชื่อจริงของคุณ" 
+                                    class="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-borderCol text-darkNavy placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-secondaryText mb-1.5">นามสกุล (Last Name)</label>
+                            <div class="relative">
+                                <span class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-secondaryText">
+                                    <i data-lucide="user-check" class="w-4 h-4"></i>
+                                </span>
+                                <input type="text" id="input-lastname" required placeholder="กรอกนามสกุลของคุณ" 
+                                    class="w-full pl-10 pr-4 py-3 rounded-xl bg-white border border-borderCol text-darkNavy placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition text-sm font-medium">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" class="w-full py-4 rounded-xl bg-aurora-gradient text-white font-semibold text-lg shadow-lg hover:opacity-95 transform active:scale-98 transition flex items-center justify-center space-x-2">
+                            <span>เริ่มทำแบบทดสอบ</span>
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- VIEW 2: EXAMINATION PAGE -->
+        <section id="view-exam" class="w-full max-w-4xl py-4 hidden">
+            <!-- Exam Header & Progress -->
+            <div class="glass-card rounded-2xl p-4 sm:p-6 mb-6 shadow-md">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+                    <div>
+                        <span class="text-xs font-semibold text-primary uppercase tracking-wider">กำลังทำแบบทดสอบ</span>
+                        <h2 class="text-xl font-bold text-darkNavy">แบบทดสอบความรู้เกี่ยวกับกีฬาลีลาศ (40 ข้อ)</h2>
+                        <p class="text-sm text-secondaryText flex items-center mt-0.5">
+                            <i data-lucide="user" class="w-3.5 h-3.5 mr-1.5"></i> ผู้เข้าสอบ: <span id="exam-user-fullname" class="font-semibold text-darkNavy ml-1"></span>
+                        </p>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button onclick="app.openSubmitModal()" class="px-5 py-2.5 rounded-xl bg-aurora-gradient text-white font-semibold text-sm shadow-md hover:opacity-95 transition flex items-center space-x-2">
+                            <i data-lucide="send" class="w-4 h-4"></i>
+                            <span>ส่งคำตอบ</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Progress stats -->
+                <div class="grid grid-cols-3 gap-2 py-3 px-4 bg-lightBg rounded-xl border border-borderCol text-center text-xs sm:text-sm mb-4">
+                    <div>
+                        <span class="text-secondaryText block">ข้อปัจจุบัน</span>
+                        <span class="font-bold text-primary text-base sm:text-lg" id="stat-current">1 / 40</span>
+                    </div>
+                    <div>
+                        <span class="text-secondaryText block">ตอบแล้ว</span>
+                        <span class="font-bold text-emerald-600 text-base sm:text-lg" id="stat-answered">0 ข้อ</span>
+                    </div>
+                    <div>
+                        <span class="text-secondaryText block">ความคืบหน้า</span>
+                        <span class="font-bold text-darkNavy text-base sm:text-lg" id="stat-percent">0%</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-borderCol rounded-full h-2.5 overflow-hidden">
+                    <div id="progress-bar" class="bg-aurora-gradient h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Question Card & Navigator Grid Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Question Box (3 columns) -->
+                <div class="lg:col-span-3 glass-card rounded-2xl p-6 sm:p-8 shadow-md flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="px-3 py-1 bg-sub-gradient text-primary rounded-lg text-sm font-semibold border border-borderCol">
+                                ข้อที่ <span id="q-number">1</span> จาก 40
+                            </span>
+                            <span id="q-status-badge" class="text-xs px-2.5 py-1 rounded-md bg-gray-100 text-secondaryText">ยังไม่ได้ตอบ</span>
+                        </div>
+
+                        <h3 id="q-text" class="text-lg sm:text-xl font-medium text-darkNavy mb-6 font-sarabun leading-relaxed">
+                            <!-- Question text injected here -->
+                        </h3>
+
+                        <div id="q-options" class="space-y-3 mb-8">
+                            <!-- Options injected here -->
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="flex justify-between items-center pt-4 border-t border-borderCol">
+                        <button onclick="app.prevQuestion()" id="btn-prev" class="px-5 py-2.5 rounded-xl border border-borderCol bg-white text-darkNavy font-semibold text-sm hover:bg-lightBg transition flex items-center space-x-2 disabled:opacity-40 disabled:cursor-not-allowed">
+                            <i data-lucide="chevron-left" class="w-4 h-4"></i>
+                            <span>ก่อนหน้า</span>
+                        </button>
+                        <button onclick="app.nextQuestion()" id="btn-next" class="px-6 py-2.5 rounded-xl bg-primary text-white font-semibold text-sm shadow-md hover:bg-royal transition flex items-center space-x-2">
+                            <span>ถัดไป</span>
+                            <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Question Navigator Sidebar (1 column) -->
+                <div class="glass-card rounded-2xl p-5 shadow-md flex flex-col h-fit">
+                    <h4 class="font-semibold text-darkNavy text-sm mb-3 flex items-center justify-between">
+                        <span>รายการข้อสอบ</span>
+                        <span class="text-xs text-secondaryText">คลิกเพื่อข้าม</span>
+                    </h4>
+                    <div id="navigator-grid" class="grid grid-cols-5 gap-2 max-h-80 overflow-y-auto pr-1">
+                        <!-- Navigator buttons injected here -->
+                    </div>
+                    <div class="mt-4 pt-3 border-t border-borderCol text-xs text-secondaryText space-y-1.5">
+                        <div class="flex items-center space-x-2"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block"></span><span>ตอบแล้ว</span></div>
+                        <div class="flex items-center space-x-2"><span class="w-3 h-3 rounded-full bg-white border border-borderCol inline-block"></span><span>ยังไม่ได้ตอบ</span></div>
+                        <div class="flex items-center space-x-2"><span class="w-3 h-3 rounded-full bg-primary inline-block"></span><span>ข้อปัจจุบัน</span></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 3: RESULT PAGE -->
+        <section id="view-result" class="w-full max-w-3xl py-4 hidden">
+            <div class="glass-card rounded-3xl p-6 sm:p-10 shadow-xl border border-white/80 text-center mb-6 relative overflow-hidden">
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-32 bg-sub-gradient rounded-b-full opacity-50 -z-10"></div>
+                
+                <div class="w-20 h-20 rounded-2xl bg-aurora-gradient text-white mx-auto flex items-center justify-center shadow-lg mb-4">
+                    <i data-lucide="trophy" class="w-10 h-10"></i>
+                </div>
+
+                <span class="inline-block px-3 py-1 bg-ice/60 text-primary text-xs font-semibold rounded-full mb-2 uppercase tracking-wider">ผลการประเมินความรู้</span>
+                <h2 class="text-2xl sm:text-3xl font-bold text-darkNavy mb-1">สรุปผลคะแนนแบบทดสอบ</h2>
+                <p class="text-sm text-secondaryText mb-6">ผู้เข้าสอบ: <span id="result-fullname" class="font-semibold text-darkNavy"></span></p>
+
+                <!-- Score Big Box -->
+                <div class="bg-sub-gradient rounded-2xl p-6 mb-6 border border-borderCol max-w-lg mx-auto shadow-inner">
+                    <div class="text-4xl sm:text-6xl font-extrabold text-primary mb-2" id="result-score-display">0 / 40</div>
+                    <div class="text-lg font-semibold text-darkNavy mb-1">คิดเป็น <span id="result-percent-display">0%</span></div>
+                    <div class="inline-block px-4 py-1.5 rounded-full text-sm font-bold shadow-xs mt-2" id="result-badge-display">ยอดเยี่ยม</div>
+                </div>
+
+                <!-- Stats Breakdown Grid -->
+                <div class="grid grid-cols-3 gap-3 mb-8 max-w-lg mx-auto">
+                    <div class="bg-white/80 p-4 rounded-xl border border-borderCol shadow-xs">
+                        <span class="text-xs text-secondaryText block">ตอบถูก</span>
+                        <span class="text-xl font-bold text-emerald-600" id="result-correct">0</span>
+                    </div>
+                    <div class="bg-white/80 p-4 rounded-xl border border-borderCol shadow-xs">
+                        <span class="text-xs text-secondaryText block">ตอบผิด</span>
+                        <span class="text-xl font-bold text-red-500" id="result-incorrect">0</span>
+                    </div>
+                    <div class="bg-white/80 p-4 rounded-xl border border-borderCol shadow-xs">
+                        <span class="text-xs text-secondaryText block">ไม่ได้ตอบ</span>
+                        <span class="text-xl font-bold text-gray-500" id="result-unanswered">0</span>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap justify-center gap-3 no-print">
+                    <button onclick="app.showReviewView()" class="px-6 py-3 rounded-xl bg-aurora-gradient text-white font-semibold text-sm shadow-md hover:opacity-95 transition flex items-center space-x-2">
+                        <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+                        <span>ดูเฉลยและตรวจสอบคำตอบ</span>
+                    </button>
+                    <button onclick="window.print()" class="px-5 py-3 rounded-xl bg-white border border-borderCol text-darkNavy font-semibold text-sm hover:bg-lightBg transition flex items-center space-x-2">
+                        <i data-lucide="printer" class="w-4 h-4"></i>
+                        <span>พิมพ์ผลคะแนน</span>
+                    </button>
+                    <button onclick="app.confirmReset()" class="px-5 py-3 rounded-xl bg-red-50 border border-red-200 text-red-600 font-semibold text-sm hover:bg-red-100 transition flex items-center space-x-2">
+                        <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+                        <span>เริ่มทำแบบทดสอบใหม่</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIEW 4: ANSWER REVIEW PAGE -->
+        <section id="view-review" class="w-full max-w-4xl py-4 hidden">
+            <div class="glass-card rounded-2xl p-6 mb-6 shadow-md flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <span class="text-xs font-semibold text-primary uppercase tracking-wider">เฉลยและตรวจสอบคำตอบ</span>
+                    <h2 class="text-xl font-bold text-darkNavy">เฉลยข้อสอบลีลาศ 40 ข้อ</h2>
+                </div>
+                <button onclick="app.showResultView()" class="px-5 py-2.5 rounded-xl bg-white border border-borderCol text-darkNavy font-semibold text-sm hover:bg-lightBg transition flex items-center space-x-2">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>กลับไปยังหน้าสรุปผล</span>
+                </button>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap gap-2 mb-6 no-print">
+                <button onclick="app.filterReview('all')" id="filter-all" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-primary text-white shadow-xs transition">ทั้งหมด (40)</button>
+                <button onclick="app.filterReview('correct')" id="filter-correct" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white text-secondaryText border border-borderCol hover:bg-lightBg transition">ตอบถูก</button>
+                <button onclick="app.filterReview('incorrect')" id="filter-incorrect" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white text-secondaryText border border-borderCol hover:bg-lightBg transition">ตอบผิด</button>
+                <button onclick="app.filterReview('unanswered')" id="filter-unanswered" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white text-secondaryText border border-borderCol hover:bg-lightBg transition">ไม่ได้ตอบ</button>
+            </div>
+
+            <!-- Review List Container -->
+            <div id="review-container" class="space-y-4">
+                <!-- Review cards injected here -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="w-full py-6 text-center text-xs text-secondaryText border-t border-borderCol bg-white/50 no-print">
+        <p>BALLROOM DANCE QUIZ &copy; 2026 | สื่อการเรียนรู้และประเมินความรู้กีฬาลีลาศระดับพรีเมียม</p>
+    </footer>
+
+    <!-- CONFIRM SUBMIT MODAL -->
+    <div id="modal-submit" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="glass-card rounded-3xl p-6 sm:p-8 max-w-md w-full shadow-2xl border border-white transform transition-all">
+            <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mb-4 mx-auto">
+                <i data-lucide="alert-circle" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-xl font-bold text-darkNavy text-center mb-2">ยืนยันการส่งคำตอบ?</h3>
+            <p class="text-sm text-secondaryText text-center mb-6">เมื่อส่งคำตอบแล้วคุณจะไม่สามารถแก้ไขคำตอบได้อีก</p>
+
+            <div class="bg-lightBg rounded-2xl p-4 mb-6 border border-borderCol space-y-2 text-sm">
+                <div class="flex justify-between">
+                    <span class="text-secondaryText">ตอบแล้ว:</span>
+                    <span class="font-bold text-emerald-600" id="modal-answered-count">0 ข้อ</span>
+                </div>
+                <div class="flex justify-between">
+                    <span class="text-secondaryText">ยังไม่ได้ตอบ:</span>
+                    <span class="font-bold text-red-500" id="modal-unanswered-count">40 ข้อ</span>
+                </div>
+            </div>
+
+            <div class="flex space-x-3">
+                <button onclick="app.closeSubmitModal()" class="flex-1 py-3 rounded-xl border border-borderCol bg-white text-darkNavy font-semibold text-sm hover:bg-lightBg transition">
+                    กลับไปตรวจสอบ
+                </button>
+                <button onclick="app.submitQuiz()" class="flex-1 py-3 rounded-xl bg-aurora-gradient text-white font-semibold text-sm shadow-md hover:opacity-95 transition">
+                    ยืนยันส่งข้อสอบ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM NOTIFICATION MODAL (NO ALERT/CONFIRM) -->
+    <div id="modal-alert" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="glass-card rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-white text-center">
+            <div id="alert-icon-wrap" class="w-12 h-12 rounded-2xl bg-blue-100 text-primary flex items-center justify-center mb-3 mx-auto">
+                <i data-lucide="info" class="w-6 h-6"></i>
+            </div>
+            <h3 id="alert-title" class="text-lg font-bold text-darkNavy mb-1">แจ้งเตือน</h3>
+            <p id="alert-message" class="text-sm text-secondaryText mb-6 font-sarabun"></p>
+            <button onclick="app.closeAlertModal()" class="w-full py-2.5 rounded-xl bg-aurora-gradient text-white font-semibold text-sm shadow-md hover:opacity-95 transition">
+                ตกลง
+            </button>
+        </div>
+    </div>
+
+    <!-- RESET CONFIRMATION MODAL -->
+    <div id="modal-reset" class="fixed inset-0 z-50 bg-black/40 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+        <div class="glass-card rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-white text-center">
+            <div class="w-12 h-12 rounded-2xl bg-red-100 text-red-600 flex items-center justify-center mb-3 mx-auto">
+                <i data-lucide="rotate-ccw" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-lg font-bold text-darkNavy mb-1">เริ่มทำแบบทดสอบใหม่?</h3>
+            <p class="text-sm text-secondaryText mb-6 font-sarabun">ข้อมูลคำตอบและคะแนนทั้งหมดจะถูกรีเซ็ตใหม่</p>
+            <div class="flex space-x-3">
+                <button onclick="app.closeResetModal()" class="flex-1 py-2.5 rounded-xl border border-borderCol bg-white text-darkNavy font-semibold text-sm hover:bg-lightBg transition">
+                    ยกเลิก
+                </button>
+                <button onclick="app.executeReset()" class="flex-1 py-2.5 rounded-xl bg-red-600 text-white font-semibold text-sm shadow-md hover:bg-red-700 transition">
+                    ยืนยันเริ่มใหม่
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLICATION LOGIC SCRIPT -->
+    <script>
+        // Official 40 Quiz Dataset with exact original text and correct answers derived from (ถูก)/(ผิด) tags
+        const quizData = [
+            { id: 1, question: "กีฬาลีลาศ มีกี่ประเภท", options: [{ id: "A", text: "5 ประเภท" }, { id: "B", text: "4 ประเภท" }, { id: "C", text: "3 ประเภท" }, { id: "D", text: "2 ประเภท" }], correctAnswer: "D" },
+            { id: 2, question: "กีฬาลีลาศมีชื่อภาษาอังกฤษว่าอย่างไร", options: [{ id: "A", text: "Ballroom Dance" }, { id: "B", text: "Balroom Dance" }, { id: "C", text: "Balloom Dance" }, { id: "D", text: "Bollroom Dance" }], correctAnswer: "A" },
+            { id: 3, question: "กีฬาลีลาศมีทั้งหมดกี่จังหวะ", options: [{ id: "A", text: "12 จังหวะ" }, { id: "B", text: "13 จังหวะ" }, { id: "C", text: "15 จังหวะ" }, { id: "D", text: "11 จังหวะ" }], correctAnswer: "D" },
+            { id: 4, question: "ประเภท Standard มีชื่อเรียกอีกชื่อหนึ่ง คือชื่อใด", options: [{ id: "A", text: "Ballroom Daning" }, { id: "B", text: "Bollroom Dancing" }, { id: "C", text: "Ballroom Dancing" }, { id: "D", text: "Balloom Dancing" }], correctAnswer: "C" },
+            { id: 5, question: "ข้อใดไม่ใช่จังหวะในประเภท Standard", options: [{ id: "A", text: "Tango" }, { id: "B", text: "Mambo" }, { id: "C", text: "Waltz" }, { id: "D", text: "Foxtrot" }], correctAnswer: "B" },
+            { id: 6, question: "ข้อใดคือชื่อเดิมของ Tango", options: [{ id: "A", text: "Milong" }, { id: "B", text: "Milonga" }, { id: "C", text: "Mironga" }, { id: "D", text: "Mirong" }], correctAnswer: "B" },
+            { id: 7, question: "บอสตันคลับ ในโรงแรมซาวอย ประเทศอังกฤษ มีชื่อเรียกว่าอะไร", options: [{ id: "A", text: "Boston Woltz" }, { id: "B", text: "Bostan Waltz" }, { id: "C", text: "Boston Watz" }, { id: "D", text: "Boston Waltz" }], correctAnswer: "D" },
+            { id: 8, question: "Waltz กลับมามีชีวิตชีวาอีกครั้งในช่วงใด", options: [{ id: "A", text: "สงครามโลกครั้งที่ 2" }, { id: "B", text: "สงครามโลกครั้งที่ 1" }, { id: "C", text: "สงครามเย็น" }, { id: "D", text: "สงครามรัสเซีย-ยูเครน" }], correctAnswer: "B" },
+            { id: 9, question: "จังหวะใดกำเนิดขึ้นทางตอนใต้ของประเทศเยอรมนี", options: [{ id: "A", text: "Viennese Waltz" }, { id: "B", text: "Foxtrot" }, { id: "C", text: "Quick Step" }, { id: "D", text: "Tango" }], correctAnswer: "A" },
+            { id: 10, question: "Viennese Waitz มีความเร็วกี่บาร์ต่อนาที", options: [{ id: "A", text: "40 บาร์ต่อนาที" }, { id: "B", text: "90 บาร์ต่อนาที" }, { id: "C", text: "60 บาร์ต่อนาที" }, { id: "D", text: "30 บาร์ต่อนาที" }], correctAnswer: "C" },
+            { id: 11, question: "Foxtrot เริ่มต้นขึ้นก่อนสงครามโลกครั้งที่ 1 ในทวีปใด", options: [{ id: "A", text: "เอเชีย" }, { id: "B", text: "แปซิฟิก" }, { id: "C", text: "ยุโรป" }, { id: "D", text: "ออสเตรเลีย" }], correctAnswer: "C" },
+            { id: 12, question: "บุคคลใดเป็นผู้ที่ดัดแปลง Foxtrot ในปี ค.ศ. 1922", options: [{ id: "A", text: "Harry Fox" }, { id: "B", text: "Frank Ford" }, { id: "C", text: "Perez Prado" }, { id: "D", text: "หม่อมเจ้าไวทยากร วรวรรณ" }], correctAnswer: "B" },
+            { id: 13, question: "จังหวะใดเป็นจังหวะที่แตกแขนงมาจาก Foxtrot", options: [{ id: "A", text: "Samba" }, { id: "B", text: "Cha Cha Cha" }, { id: "C", text: "Mambo" }, { id: "D", text: "Quick Step" }], correctAnswer: "D" },
+            { id: 14, question: "เพราะเหตุใด Foxtrot จึงถูกปรับลดจังหวะและมีการผสมผสานกับจังหวะใหม่ขึ้นจนเริ่มแพร่หลาย", options: [{ id: "A", text: "มีความเร็วต่ำกว่าจังหวะอื่น" }, { id: "B", text: "นักดนตรีเล่นได้ยาก" }, { id: "C", text: "มีความเร็วสูงถึง 50 บาร์ต่อนาที" }, { id: "D", text: "ถูกมากกว่าหนึ่งตัวเลือก" }], correctAnswer: "D" },
+            { id: 15, question: "Samba จัดอยู่ในกีฬาลีลาศประเภทใด", options: [{ id: "A", text: "Standard" }, { id: "B", text: "Ballroom Dancing" }, { id: "C", text: "Latin American" }, { id: "D", text: "Latin Africa" }], correctAnswer: "C" },
+            { id: 16, question: "Samba มีต้นแบบมาจากแถบใด", options: [{ id: "A", text: "แอฟริกา" }, { id: "B", text: "เอเชีย" }, { id: "C", text: "อเมริกา" }, { id: "D", text: "ออสเตรเลีย" }], correctAnswer: "A" },
+            { id: 17, question: "ประเทศใดที่ Samba ถูกพัฒนาเป็นที่นิยม", options: [{ id: "A", text: "ประเทศอินดีย" }, { id: "B", text: "ประเทศไอซ์แลนด์" }, { id: "C", text: "ประเทศบราซิล" }, { id: "D", text: "ประเทศอังกฤษ" }], correctAnswer: "C" },
+            { id: 18, question: "จังหวะใดที่ถูกนำเข้าไปยังประเทศอเมริกาโดยทาสชาวแอฟริกา", options: [{ id: "A", text: "Samba" }, { id: "B", text: "Mambo" }, { id: "C", text: "Rumba" }, { id: "D", text: "Cha Cha Cha" }], correctAnswer: "C" },
+            { id: 19, question: "ข้อใดกล่าวถึง Mambo ได้ถูกต้องที่สุด", options: [{ id: "A", text: "ตั้งจากชื่อของหมอผีในประเทศเฮติ" }, { id: "B", text: "ผสมผสานการเต้นในแบบ แอฟริกัน + คิวบัน" }, { id: "C", text: "เปเรซ ปราโด นำเอาจังหวะนี้มาเล่นในประเทศเม็กซิโก" }, { id: "D", text: "กล่าวถูกต้องทุกตัวเลือก" }], correctAnswer: "D" },
+            { id: 20, question: "บุคคลใดถูกเรียกเป็น ราชาแห่งแมมโบ้ หรือ Mambo King", options: [{ id: "A", text: "Harry Fox" }, { id: "B", text: "Frank Ford" }, { id: "C", text: "Perez Prado" }, { id: "D", text: "หม่อมเจ้าไวทยากร วรวรรณ" }], correctAnswer: "C" },
+            { id: 21, question: "นักดนตรีชาวคิวบาใดที่เป็นผู้ที่นำเอาจังหวะ Mambo มาเล่นในประเทศเม็กซิโก", options: [{ id: "A", text: "Perz Prado" }, { id: "B", text: "Perez Prado" }, { id: "C", text: "Perez Prodo" }, { id: "D", text: "Parez Prado" }], correctAnswer: "B" },
+            { id: 22, question: "Cha Cha Cha ถูกพัฒนามาจากจังหวะใด", options: [{ id: "A", text: "Mambo" }, { id: "B", text: "Samba" }, { id: "C", text: "Rumba" }, { id: "D", text: "Pasodoble" }], correctAnswer: "A" },
+            { id: 23, question: "“ตั้งขึ้นจากการเลียนเสียงรองเท้ากระทบพื้นขณะเต้นรำ พบเห็นครั้งแรกที่ประเทศอเมริกาและแพร่หลายไปยังแถบยุโรป จากนั้นได้รับความนิยมอย่างจริงจังในช่วงปี ค.ศ. 1956” จากบทความข้างตนกล่าวถึงจังหวะใดต่อไปนี้", options: [{ id: "A", text: "Pasodoble" }, { id: "B", text: "Cha Cha Cha" }, { id: "C", text: "Jive" }, { id: "D", text: "Foxtrot" }], correctAnswer: "B" },
+            { id: 24, question: "Cha Cha Cha ถูกตัดทอนชื่อลง ตรงกับข้อใดมากที่สุด", options: [{ id: "A", text: "Cha Cha Cha" }, { id: "B", text: "Cha Cho" }, { id: "C", text: "Cha Cha Cho" }, { id: "D", text: "Cha Cha" }], correctAnswer: "D" },
+            { id: 25, question: "Jive เป็นจังหวะที่เน้นในส่วนต่าง ๆ ยกเว้นข้อใด", options: [{ id: "A", text: "เน้นการดีด" }, { id: "B", text: "เน้นการสะบัด" }, { id: "C", text: "เน้นการเตะปลายเท้า" }, { id: "D", text: "เน้นการใช้สีหน้า" }], correctAnswer: "D" },
+            { id: 26, question: "จังหวะใดที่เหมาะสมแก่การใช้ในช่วงพิธีกรรม ที่นักสู้วัวกระทิงกำลังเดินลงสนาม", options: [{ id: "A", text: "Tango" }, { id: "B", text: "Waltz" }, { id: "C", text: "Rumbo" }, { id: "D", text: "Pasodoble" }], correctAnswer: "D" },
+            { id: 27, question: "ในสมัยรัชกาลใดที่มีข้อสันนิษฐานว่าลีลาศเริ่มแพร่เข้าสู่ประเทศไทย", options: [{ id: "A", text: "รัชกาลที่ 3" }, { id: "B", text: "รัชกาลที่ 4" }, { id: "C", text: "รัชกาลที่ 5" }, { id: "D", text: "รัชกาลที่ 6" }], correctAnswer: "B" },
+            { id: 28, question: "กีฬาลีลาศเริ่มเป็นที่นิยมขึ้นเรื่อย ๆ ในสมัยใด", options: [{ id: "A", text: "สมัยพระบาทสมเด็จพระจอมเกล้าเจ้าอยู่หัว" }, { id: "B", text: "สมัยพระบาทสมเด็จพระพุทธเลิศหล้านภาลัย" }, { id: "C", text: "สมัยพระบาทสมเด็จพระปกเกล้าเจ้าอยู่หัว" }, { id: "D", text: "สมัยพระบาทสมเด็จพระมงกุฎเกล้าเจ้าอยู่หัว" }], correctAnswer: "C" },
+            { id: 29, question: "เมื่อวันที่ 16 ตุลาคม พ.ศ. 2488 ยื่นจดทะเบียบสมาคม โดยมีชื่อว่าอะไร", options: [{ id: "A", text: "สมาคมสมัครเล่นเต้นรำ" }, { id: "B", text: "สมาคมครูลีลาศแห่งประเทศไทย" }, { id: "C", text: "สมาคมลีลาศเพื่อพัฒนาชุมชน" }, { id: "D", text: "สมาคมลีลาศแห่งประเทศไทย" }], correctAnswer: "D" },
+            { id: 30, question: "ในปี พ.ศ. 2475 มีการจัดตั้งสมาคมสมัครเล่นเต้นรำ โดยมีบุคคลใดเป็นประธาน", options: [{ id: "A", text: "พลเรือตรี เฉียบ แสงชูโต" }, { id: "B", text: "หม่อมเจ้าไวทยากร วรวรรณ" }, { id: "C", text: "คุณประนอม สุขุม" }, { id: "D", text: "หม่อมเจ้าวรนาฎ ณ สุโขทัย" }], correctAnswer: "B" },
+            { id: 31, question: "คำว่า “ลีลาศ” ได้ถูกบัญญัติขึ้นในปีพุทธศักราชใด", options: [{ id: "A", text: "2486" }, { id: "B", text: "2466" }, { id: "C", text: "2456" }, { id: "D", text: "2476" }], correctAnswer: "D" },
+            { id: 32, question: "บุคคลใดเป็นผู้ชนะในการจัดการแข่งขันขึ้นที่วังสราญรมย์", options: [{ id: "A", text: "หม่อมเจ้าไวทยากร วรวรรณ และคุณประนอม สุขุม" }, { id: "B", text: "พลเรือตรี เฉียบ แสงชูโต และหม่อมเจ้าไวทยากร วรวรรณ" }, { id: "C", text: "พลเรือตรี เฉียบ แสงชูโต และคุณประนอม สุขุม" }, { id: "D", text: "หม่อมเจ้าวรนาฎ ณ สุโขทัย และคุณประนอม สุขุม" }], correctAnswer: "C" },
+            { id: 33, question: "ข้อใดกล่าวถึงกีฬาลีลาศได้ถูกต้อง", options: [{ id: "A", text: "เป็นคู่เต้น ชาย 1 คน หญิง 2 คน" }, { id: "B", text: "เป็นคู่เต้น ชาย 1 คน หญิง 1 คน" }, { id: "C", text: "เป็นคู่เต้น ชาย 1 คน ชาย 1 คน" }, { id: "D", text: "เป็นคู่เต้น หญิง 1 คน หญิง 1 คน" }], correctAnswer: "B" },
+            { id: 34, question: "ข้อใดไม่ใช่หลักเกณฑ์การให้คะแนนการเต้นลีลาศ", options: [{ id: "A", text: "การเต้นให้ลงจังหวะกับดนตรี" }, { id: "B", text: "ดูการทรงตัวของลำตัว" }, { id: "C", text: "การเคลื่อนไหวอย่างสวยงาม" }, { id: "D", text: "การเต้นโดยค่อมจังหวะดนตรี" }], correctAnswer: "D" },
+            { id: 35, question: "ข้อใดต่างจากพวก", options: [{ id: "A", text: "Jive" }, { id: "B", text: "Pasodoble" }, { id: "C", text: "Tango" }, { id: "D", text: "Samba" }], correctAnswer: "C" },
+            { id: 36, question: "ข้อใดต่อไปนี้จับคู่กลุ่มจังหวะและประเภทได้ถูกต้อง", options: [{ id: "A", text: "Waltz - Standard" }, { id: "B", text: "Cha Cha Cha - Ballroom Dancing" }, { id: "C", text: "Jive - Ballroom Dancing" }, { id: "D", text: "Foxtrot - Latin American" }], correctAnswer: "A" },
+            { id: 37, question: "บุคคลใดปฏิบัติตนเป็นนักเต้นลีลาศได้อย่างเหมาะสม", options: [{ id: "A", text: "นาราบังคับจังหวะในการเต้นได้ยากเพราะคู่ที่เต้นด้วยเป็นเพื่อนสนิท" }, { id: "B", text: "นพนทีหมั่นฝึกซ้อมลีลาศกับคู่ของตนอยู่เสมอ และดูแลสุขภาพเป็นประจำ" }, { id: "C", text: "รัศมีไม่ตั้งใจซ้อมหนำซ้ำยังชวนคู่เต้นของตนเองหนีออกจากห้องเรียน" }, { id: "D", text: "กัลยาดื่มเครื่องดื่มแอลกอฮอล์ตลอดเวลาทั้งขณะซ้อมและช่วงพักซ้อม" }], correctAnswer: "B" },
+            { id: 38, question: "(1) มีหลักฐานแน่ชัด การสันนิษฐานเชื่อว่าเกิดขึ้นในสมัย (2) พระบาทสมเด็จพระจอมเกล้าเจ้าอยู่หัว (รัชกาลที่ 4) (3) โดยมีการบันทึกของหม่อมแอนนา ได้ลองแนะนำให้ท่านรู้จักกับการเต้นของชนชั้นสูง (4) แต่ท่านกลับรู้จักการเต้นชนิดนั้นได้ดีอยู่แล้ว จึงคาดว่าน่าจะทรงศึกษาจากตำราต่างประเทศด้วยพระองค์เอง<br><br>จากข้อความข้างต้นข้อความใดเป็นข้อความที่ไม่สามารถอนุมานได้", options: [{ id: "A", text: "ข้อความ (4)" }, { id: "B", text: "ข้อความ (2)" }, { id: "C", text: "ข้อความ (3)" }, { id: "D", text: "ข้อความ (1)" }], correctAnswer: "D" },
+            { id: 39, question: "ข้อใดต่อไปนี้กล่าวถูกต้อง", options: [{ id: "A", text: "Rumba ถูกนำเข้าไปยังประเทศอเมริกาโดยทาสชาวบังกลาเทศ" }, { id: "B", text: "Quick Step เป็นจังหวะที่แตกแขนงมาจาก Tango" }, { id: "C", text: "Foxtrot เริ่มต้นขึ้นก่อนสงครามโลกครั้งที่ 1 ในทวีปยุโรป" }, { id: "D", text: "Waltz กำเนิดขึ้นในปี ค.ศ. 1910 - 1914 ที่ บอสตันคลับ ในโรงแรมซาวอย ประเทศสวีเดน" }], correctAnswer: "C" },
+            { id: 40, question: "ข้อใดคือข้อควรปฏิบัติตนที่ถูกต้องและเหมาะสมที่สุด", options: [{ id: "A", text: "เพลงพิณเต้นไม่เก่งจึงตัดสินใจออกจากชมรมลีลาศ" }, { id: "B", text: "ปรัชญาเป็นคนที่ไม่ตั้งใจเต้นลีลาศในพิธีเปิดกีฬาสีจึงทำให้ภาพรวมออกมาไม่ดี" }, { id: "C", text: "วาสนาคอยสอนเพื่อนซ้อมลีลาศและคอยแนะนำในสิ่งที่เพื่อนยังทำไม่ได้" }, { id: "D", text: "ขวัญอุมาไม่มาตามนัดการซ้อมลีลาศ เพราะไม่ชอบคู่ที่เต้นลีลาศด้วยกัน" }], correctAnswer: "C" }
+        ];
+
+        // Application State
+        let state = {
+            currentView: 'welcome', // welcome, exam, result, review
+            userProfile: { firstname: '', lastname: '' },
+            currentIndex: 0,
+            answers: {}, // { questionId: 'A'/'B'/'C'/'D' }
+                      isSubmitted: false,
+            results: null,
+            reviewFilter: 'all'
+        };
+
+        // Initialize App on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadFromStorage();
+            lucide.createIcons();
+            renderCurrentView();
+        });
+
+        // Save State to LocalStorage
+        function saveToStorage() {
+            try {
+                localStorage.setItem('ballroom_quiz_state', JSON.stringify(state));
+            } catch (e) {
+                console.error('Storage error:', e);
+            }
+        }
+
+        // Load State from LocalStorage
+        function loadFromStorage() {
+            try {
+                const saved = localStorage.getItem('ballroom_quiz_state');
+                if (saved) {
+                    state = JSON.parse(saved);
+                }
+            } catch (e) {
+                console.error('Storage load error:', e);
+            }
+        }
+
+        // View Management Controller
+        function renderCurrentView() {
+            const views = ['welcome', 'exam', 'result', 'review'];
+            views.forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                if (el) {
+                    if (v === state.currentView) {
+                        el.classList.remove('hidden');
+                    } else {
+                        el.classList.add('hidden');
+                    }
+                }
+            });
+
+            // Header User Info update
+            const headerUser = document.getElementById('header-user-info');
+            const headerName = document.getElementById('header-name-display');
+            if (state.userProfile.firstname && state.currentView !== 'welcome') {
+                headerUser.classList.remove('hidden');
+                headerUser.classList.add('flex');
+                headerName.textContent = `${state.userProfile.firstname} ${state.userProfile.lastname}`;
+            } else {
+                headerUser.classList.add('hidden');
+                headerUser.classList.remove('flex');
+            }
+
+            // Render specific view content
+            if (state.currentView === 'exam') {
+                renderQuestion();
+                renderNavigator();
+                updateExamStats();
+            } else if (state.currentView === 'result') {
+                renderResultView();
+            } else if (state.currentView === 'review') {
+                renderReviewView();
+            }
+
+            lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Custom Alert Modal
+        function showAlert(title, message) {
+            document.getElementById('alert-title').textContent = title;
+            document.getElementById('alert-message').textContent = message;
+            document.getElementById('modal-alert').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeAlertModal() {
+            document.getElementById('modal-alert').classList.add('hidden');
+        }
+
+        // Start Quiz from Welcome Form
+        function startQuiz(event) {
+            event.preventDefault();
+            const fn = document.getElementById('input-firstname').value.trim();
+            const ln = document.getElementById('input-lastname').value.trim();
+
+            if (!fn || !ln) {
+                showAlert('ข้อมูลไม่ครบถ้วน', 'กรุณากรอกชื่อและนามสกุลให้ครบถ้วนก่อนเริ่มทำแบบทดสอบ');
+                return;
+            }
+
+            state.userProfile = { firstname: fn, lastname: ln };
+            if (!state.answers) state.answers = {};
+            state.currentView = 'exam';
+            state.currentIndex = 0;
+            saveToStorage();
+            renderCurrentView();
+        }
+
+        // Render Current Question in Examination View
+        function renderQuestion() {
+            const q = quizData[state.currentIndex];
+            document.getElementById('q-number').textContent = q.id;
+            document.getElementById('q-text').innerHTML = q.question;
+
+            const selectedOption = state.answers[q.id];
+            const badge = document.getElementById('q-status-badge');
+            if (selectedOption) {
+                badge.textContent = `ตอบแล้ว (${selectedOption})`;
+                badge.className = 'text-xs px-2.5 py-1 rounded-md bg-emerald-100 text-emerald-700 font-medium';
+            } else {
+                badge.textContent = 'ยังไม่ได้ตอบ';
+                badge.className = 'text-xs px-2.5 py-1 rounded-md bg-gray-100 text-secondaryText';
+            }
+
+            const optionsContainer = document.getElementById('q-options');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach(opt => {
+                const isSelected = selectedOption === opt.id;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => selectOption(q.id, opt.id);
+                btn.className = `w-full text-left p-4 rounded-xl border transition flex items-center space-x-3 font-sarabun text-base ${
+                    isSelected 
+                        ? 'border-primary bg-sub-gradient text-darkNavy shadow-sm ring-2 ring-primary/30 font-semibold' 
+                        : 'border-borderCol bg-white hover:bg-lightBg text-darkNavy'
+                }`;
+
+                btn.innerHTML = `
+                    <span class="w-8 h-8 rounded-lg flex items-center justify-center font-kanit font-bold text-sm shrink-0 ${
+                        isSelected ? 'bg-primary text-white shadow-xs' : 'bg-lightBg text-secondaryText border border-borderCol'
+                    }">${opt.id}</span>
+                    <span class="flex-1">${opt.text}</span>
+                    ${isSelected ? '<i data-lucide="check-circle-2" class="w-5 h-5 text-primary shrink-0"></i>' : ''}
+                `;
+                optionsContainer.appendChild(btn);
+            });
+
+            // Navigation buttons state
+            document.getElementById('btn-prev').disabled = state.currentIndex === 0;
+            const nextBtn = document.getElementById('btn-next');
+            if (state.currentIndex === quizData.length - 1) {
+                nextBtn.innerHTML = '<span>ตรวจสอบและส่ง</span><i data-lucide="check" class="w-4 h-4"></i>';
+                nextBtn.onclick = () => app.openSubmitModal();
+            } else {
+                nextBtn.innerHTML = '<span>ถัดไป</span><i data-lucide="chevron-right" class="w-4 h-4"></i>';
+                nextBtn.onclick = () => app.nextQuestion();
+            }
+        }
+
+        // Select Option
+        function selectOption(qId, optId) {
+            state.answers[qId] = optId;
+            saveToStorage();
+            renderQuestion();
+            renderNavigator();
+            updateExamStats();
+        }
+
+        // Navigation Methods
+        function nextQuestion() {
+            if (state.currentIndex < quizData.length - 1) {
+                state.currentIndex++;
+                renderQuestion();
+                renderNavigator();
+                updateExamStats();
+            }
+        }
+
+        function prevQuestion() {
+            if (state.currentIndex > 0) {
+                state.currentIndex--;
+                renderQuestion();
+                renderNavigator();
+                updateExamStats();
+            }
+        }
+
+        function goToQuestion(index) {
+            state.currentIndex = index;
+            renderQuestion();
+            renderNavigator();
+            updateExamStats();
+        }
+
+        // Render Question Navigator Grid
+        function renderNavigator() {
+            const grid = document.getElementById('navigator-grid');
+            grid.innerHTML = '';
+
+            quizData.forEach((q, idx) => {
+                const isAnswered = state.answers[q.id] !== undefined;
+                const isCurrent = state.currentIndex === idx;
+
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.onclick = () => goToQuestion(idx);
+                
+                let btnClasses = 'h-10 rounded-xl font-kanit text-xs font-bold transition flex items-center justify-center border ';
+                if (isCurrent) {
+                    btnClasses += 'bg-primary text-white border-primary shadow-md ring-2 ring-primary/20 scale-105';
+                } else if (isAnswered) {
+                    btnClasses += 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100';
+                } else {
+                    btnClasses += 'bg-white text-secondaryText border-borderCol hover:bg-lightBg';
+                }
+
+                btn.className = btnClasses;
+                btn.textContent = q.id;
+                grid.appendChild(btn);
+            });
+        }
+
+        // Update Exam Stats Bar
+        function updateExamStats() {
+            const answeredCount = Object.keys(state.answers).length;
+            const percent = Math.round((answeredCount / 40) * 100);
+
+            document.getElementById('stat-current').textContent = `${state.currentIndex + 1} / 40`;
+            document.getElementById('stat-answered').textContent = `${answeredCount} ข้อ`;
+            document.getElementById('stat-percent').textContent = `${percent}%`;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+        }
+
+        // Submit Confirmation Modal
+        function openSubmitModal() {
+            const answeredCount = Object.keys(state.answers).length;
+            const unansweredCount = 40 - answeredCount;
+
+            document.getElementById('modal-answered-count').textContent = `${answeredCount} ข้อ`;
+            document.getElementById('modal-unanswered-count').textContent = `${unansweredCount} ข้อ`;
+            document.getElementById('modal-submit').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeSubmitModal() {
+            document.getElementById('modal-submit').classList.add('hidden');
+        }
+
+        // Process Submission & Grade Calculation
+        function submitQuiz() {
+            closeSubmitModal();
+
+            let correct = 0;
+            let incorrect = 0;
+            let unanswered = 0;
+
+            quizData.forEach(q => {
+                const userAns = state.answers[q.id];
+                if (!userAns) {
+                    unanswered++;
+                } else if (userAns === q.correctAnswer) {
+                    correct++;
+                } else {
+                    incorrect++;
+                }
+            });
+
+            const percent = Math.round((correct / 40) * 100);
+
+            let gradeTitle = '';
+            let gradeColor = '';
+            if (correct >= 36) {
+                gradeTitle = 'ยอดเยี่ยม';
+                gradeColor = 'bg-emerald-100 text-emerald-700 border border-emerald-300';
+            } else if (correct >= 30) {
+                gradeTitle = 'ดีมาก';
+                gradeColor = 'bg-blue-100 text-blue-700 border border-blue-300';
+            } else if (correct >= 20) {
+                gradeTitle = 'ดี';
+                gradeColor = 'bg-indigo-100 text-indigo-700 border border-indigo-300';
+            } else if (correct >= 10) {
+                gradeTitle = 'ควรทบทวนเพิ่มเติม';
+                gradeColor = 'bg-amber-100 text-amber-700 border border-amber-300';
+            } else {
+                gradeTitle = 'ควรศึกษาเนื้อหาเพิ่มเติม';
+                gradeColor = 'bg-red-100 text-red-700 border border-red-300';
+            }
+
+            state.isSubmitted = true;
+            state.results = {
+                score: correct,
+                percent: percent,
+                correct: correct,
+                incorrect: incorrect,
+                unanswered: unanswered,
+                gradeTitle: gradeTitle,
+                gradeColor: gradeColor
+            };
+            state.currentView = 'result';
+            saveToStorage();
+            renderCurrentView();
+        }
+
+        // Render Result View
+        function renderResultView() {
+            const res = state.results;
+            if (!res) return;
+
+            document.getElementById('result-fullname').textContent = `${state.userProfile.firstname} ${state.userProfile.lastname}`;
+            document.getElementById('result-score-display').textContent = `${res.score} / 40`;
+            document.getElementById('result-percent-display').textContent = `${res.percent}%`;
+            
+            const badge = document.getElementById('result-badge-display');
+            badge.textContent = res.gradeTitle;
+            badge.className = `inline-block px-4 py-1.5 rounded-full text-sm font-bold shadow-xs mt-2 ${res.gradeColor}`;
+
+            document.getElementById('result-correct').textContent = res.correct;
+            document.getElementById('result-incorrect').textContent = res.incorrect;
+            document.getElementById('result-unanswered').textContent = res.unanswered;
+        }
+
+        // Switch to Review View
+        function showReviewView() {
+            state.currentView = 'review';
+            state.reviewFilter = 'all';
+            saveToStorage();
+            renderCurrentView();
+        }
+
+        function showResultView() {
+            state.currentView = 'result';
+            saveToStorage();
+            renderCurrentView();
+        }
+
+        // Filter Review
+        function filterReview(filterType) {
+            state.reviewFilter = filterType;
+            
+            // Update filter buttons UI
+            ['all', 'correct', 'incorrect', 'unanswered'].forEach(f => {
+                const btn = document.getElementById(`filter-${f}`);
+                if (f === filterType) {
+                    btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-primary text-white shadow-xs transition';
+                } else {
+                    btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-white text-secondaryText border border-borderCol hover:bg-lightBg transition';
+                }
+            });
+
+            renderReviewList();
+        }
+
+        // Render Review List with Filtering
+        function renderReviewView() {
+            // Update button active styles initially
+            filterReview(state.reviewFilter);
+        }
+
+        function renderReviewList() {
+            const container = document.getElementById('review-container');
+            container.innerHTML = '';
+
+            let countFiltered = 0;
+
+            quizData.forEach(q => {
+                const userAns = state.answers[q.id];
+                let status = 'unanswered';
+                if (userAns) {
+                    status = userAns === q.correctAnswer ? 'correct' : 'incorrect';
+                }
+
+                // Apply filter
+                if (state.reviewFilter !== 'all' && state.reviewFilter !== status) {
+                    return;
+                }
+                countFiltered++;
+
+                const card = document.createElement('div');
+                card.className = 'glass-card rounded-2xl p-5 sm:p-6 shadow-sm border border-borderCol';
+
+                let statusBadge = '';
+                if (status === 'correct') {
+                    statusBadge = '<span class="px-3 py-1 bg-emerald-100 text-emerald-700 text-xs font-semibold rounded-lg flex items-center space-x-1 w-fit"><i data-lucide="check" class="w-3.5 h-3.5"></i><span>ตอบถูก (+1 คะแนน)</span></span>';
+                } else if (status === 'incorrect') {
+                    statusBadge = '<span class="px-3 py-1 bg-red-100 text-red-700 text-xs font-semibold rounded-lg flex items-center space-x-1 w-fit"><i data-lucide="x" class="w-3.5 h-3.5"></i><span>ตอบผิด (0 คะแนน)</span></span>';
+                } else {
+                    statusBadge = '<span class="px-3 py-1 bg-gray-100 text-secondaryText text-xs font-semibold rounded-lg flex items-center space-x-1 w-fit"><i data-lucide="minus" class="w-3.5 h-3.5"></i><span>ไม่ได้ตอบ (0 คะแนน)</span></span>';
+                }
+
+                let optionsHtml = '';
+                q.options.forEach(opt => {
+                    const isUserChoice = userAns === opt.id;
+                    const isCorrectChoice = q.correctAnswer === opt.id;
+
+                    let optStyle = 'bg-white border-borderCol text-darkNavy';
+                    let iconHtml = '';
+
+                    if (isCorrectChoice) {
+                        optStyle = 'bg-emerald-50 border-emerald-300 text-emerald-900 font-medium';
+                        iconHtml = '<span class="text-xs px-2 py-0.5 rounded bg-emerald-600 text-white font-semibold ml-auto">เฉลยที่ถูกต้อง</span>';
+                    }
+                    if (isUserChoice && !isCorrectChoice) {
+                        optStyle = 'bg-red-50 border-red-300 text-red-900 font-medium';
+                        iconHtml = '<span class="text-xs px-2 py-0.5 rounded bg-red-500 text-white font-semibold ml-auto">ที่คุณเลือก</span>';
+                    } else if (isUserChoice && isCorrectChoice) {
+                        iconHtml = '<span class="text-xs px-2 py-0.5 rounded bg-emerald-600 text-white font-semibold ml-auto">ที่คุณเลือก (ถูกต้อง)</span>';
+                    }
+
+                    optionsHtml += `
+                        <div class="p-3 rounded-xl border ${optStyle} flex items-center space-x-3 text-sm font-sarabun">
+                            <span class="w-7 h-7 rounded-lg bg-lightBg border border-borderCol flex items-center justify-center font-kanit font-bold text-xs shrink-0">${opt.id}</span>
+                            <span class="flex-1">${opt.text}</span>
+                            ${iconHtml}
+                        </div>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 pb-3 border-b border-borderCol">
+                        <span class="font-kanit font-bold text-primary text-base">ข้อที่ ${q.id} จาก 40</span>
+                        ${statusBadge}
+                    </div>
+                    <h4 class="text-base sm:text-lg font-medium text-darkNavy mb-4 font-sarabun leading-relaxed">${q.question}</h4>
+                    <div class="space-y-2 mb-2">
+                        ${optionsHtml}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            if (countFiltered === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 glass-card rounded-2xl">
+                        <i data-lucide="search" class="w-10 h-10 text-secondaryText mx-auto mb-2 opacity-50"></i>
+                        <p class="text-secondaryText font-medium">ไม่พบรายการข้อสอบในตัวกรองนี้</p>
+                    </div>
+                `;
+            }
+
+            lucide.createIcons();
+        }
+
+        // Reset Quiz Modals & Actions
+        function confirmReset() {
+            document.getElementById('modal-reset').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closeResetModal() {
+            document.getElementById('modal-reset').classList.add('hidden');
+        }
+
+        function executeReset() {
+            closeResetModal();
+            state = {
+                currentView: 'welcome',
+                userProfile: { firstname: '', lastname: '' },
+                currentIndex: 0,
+                answers: {},
+                isSubmitted: false,
+                results: null,
+                reviewFilter: 'all'
+            };
+            localStorage.removeItem('ballroom_quiz_state');
+            document.getElementById('form-welcome').reset();
+            renderCurrentView();
+        }
+
+        // Helper return home
+        function returnHome() {
+            if (state.currentView === 'exam' && Object.keys(state.answers).length > 0) {
+                // Confirm if leaving active exam
+                if (!confirm('คุณกำลังทำแบบทดสอบค้างอยู่ ต้องการกลับหน้าแรกหรือไม่?')) {
+                    return;
+                }
+            }
+            state.currentView = state.isSubmitted ? 'result' : (state.userProfile.firstname ? 'exam' : 'welcome');
+            renderCurrentView();
+        }
+
+        // Expose app functions globally
+        window.app = {
+            startQuiz,
+            nextQuestion,
+            prevQuestion,
+            openSubmitModal,
+            closeSubmitModal,
+            submitQuiz,
+            showReviewView,
+            showResultView,
+            filterReview,
+            confirmReset,
+            closeResetModal,
+            executeReset,
+            returnHome,
+            closeAlertModal
+        };
+    </script>
+</body>
+</html>
